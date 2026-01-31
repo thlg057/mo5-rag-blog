@@ -1,0 +1,52 @@
+baseURL = "https://retrocomputing-ai.cloud"
+defaultContentLanguage = "fr"
+defaultContentLanguageInSubdir = false
+theme = "PaperMod"
+enableRobotsTXT = true
+canonifyURLs = true
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+googleAnalytics = "GTM-NM9JM6BW"
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  ShowAuthor = false
+  hideFooter = true
+  ShowDate = false
+  copyright = "© 2025 - Projet MCP retro computing server"
+  #dateFormat = "02/01/2006"
+
+[languages]
+  [languages.fr]
+    languageCode = "fr-fr"
+    languageName = "Français"
+    weight = 1
+    title = "Bienvenue sur retrocomputing-ai.com"
+    contentDir = "content/fr"
+    [languages.fr.params]
+      description = "Un serveur MCP dédié au rétro computing"
+    [languages.fr.params.sections.docs]
+      title = "Documentations"
+      sortBy = "title"
+      sortOrder = "asc"
+
+  [languages.en]
+    languageCode = "en-us"
+    languageName = "English"
+    weight = 2
+    title = "Welcome to retrocomputing-ai.com"
+    contentDir = "content/en"
+    [languages.en.params]
+      description = "A MCP server dedicated to retro-computing"
+    [languages.en.params.sections.docs]
+      title = "Documentations"
+      sortBy = "title"
+      sortOrder = "asc"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
