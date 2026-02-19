@@ -6,7 +6,7 @@ enableRobotsTXT = true
 canonifyURLs = true
 pygmentsCodeFences = true
 pygmentsUseClasses = true
-googleAnalytics = "GTM-NM9JM6BW"
+googleAnalytics = "G-BV5NXCHWXE"
 
 [pagination]
   pagerSize = 10
