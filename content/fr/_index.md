@@ -8,7 +8,11 @@ tags:
 - RAG
 - MCP
 - MO5
-- NodeJS
+- Thomson
+- Motorola
+- 6809
+- C
+- wibe coding
 title: "Bienvenue sur retrocomputing-ai.cloud"
 translationKey: "index-1"
 ---
@@ -19,32 +23,73 @@ Quand on parle de préservation du patrimoine informatique, on pense souvent au 
 
 Mais il manque souvent quelque chose d'essentiel : **la connaissance**.
 
-Comment retrouver, sans fouiller pendant 30 minutes, la syntaxe exacte d'une routine assembleur 6809 ?\
+Comment retrouver, sans fouiller pendant 30 minutes, la syntaxe exacte d'une routine assembleur 6809 ?  
 Ou encore cette astuce obscure pour compiler un programme C sur MO5 ?
 
-C'est exactement pour ça que j'ai lancé **retrocomputing-ai.cloud** : un serveur RAG (*Retrieval-Augmented Generation*) pensé pour aider à faire revivre les machines... en les rendant **de nouveau programmables**.
+C'est exactement pour ça que j'ai lancé **retrocomputing-ai.cloud** : un serveur RAG (*Retrieval-Augmented Generation*) pensé pour aider à faire revivre les machines… en les rendant **de nouveau programmables**.
+
+---
 
 ## Ma démarche : une aide au développement très ciblée
 
 Pour l'instant, je me concentre volontairement sur un seul terrain de jeu : 👉 **le Thomson MO5**
 
-Le BASIC est déjà très bien couvert partout.\
+Le BASIC est déjà très bien couvert partout.  
 En revanche, dès qu'on touche :
 
--   au **C**
--   à l'**assembleur**
--   aux détails bas niveau du 6809
+- au **C**
+- à l'**assembleur**
+- aux détails bas niveau du 6809
 
-...les informations deviennent éparpillées, parfois contradictoires, et souvent difficiles à retrouver.
+…les informations deviennent éparpillées, parfois contradictoires, et souvent difficiles à retrouver.
 
-Et puis soyons honnêtes : j'ai un MO5 sous la main... ça aide 😄
+Et puis soyons honnêtes : j'ai un MO5 sous la main… ça aide 😄
 
 L'idée est simple :
 
-> poser une question en langage naturel,\
-> et laisser le RAG retrouver la bonne page, le bon extrait, la bonne explication.
+> poser une question en langage naturel,  
+> et laisser le RAG retrouver la bonne page, le bon extrait, la bonne 
+> explication.
 
-À terme, j'aimerais étendre la plateforme à d'autres machines mythiques : Commodore 64, Apple II, Amstrad CPC...
+### Ce que contient la base de connaissances
+
+La base documentaire couvre plusieurs couches, bien séparées pour éviter de tout mélanger :
+
+**📄 Documentation officielle MO5**  
+Les PDFs de référence sur le hardware, le système, le BASIC — les sources primaires, numérisées et indexées.
+
+**⚙️ CMOC**  
+Une documentation dédiée au compilateur C pour 6809, que j'ai synthétisée dans un fichier Markdown pour la rendre plus exploitable par les IA.
+
+**🛠️ SDK MO5**  
+Tous les fichiers `.h` du SDK sont documentés en Markdown (prototypes, descriptions, exemples). Ils sont injectés dans le RAG dans une catégorie séparée, et installés automatiquement si vous partez du template (`make install`).
+
+**📚 How-to et patterns**  
+Des guides que j'ai rédigés sur les techniques spécifiques au jeu vidéo sur MO5 : VBL, compression RLE, détection de collisions, optimisations mémoire… Le genre de trucs qu'on ne trouve nulle part, ou qu'on redécouvre à la dure après trois soirées perdues 😄
+
+À terme, j'aimerais étendre la plateforme à d'autres machines mythiques : Commodore 64, Apple II, Amstrad CPC…
+
+---
+
+## Une toolchain complète pour développer sur MO5 en 2025
+
+Le serveur RAG ne vit pas seul. Il fait partie d'un écosystème que j'ai construit brique par brique :
+
+### 🛠️ SDK MO5
+Une bibliothèque C optimisée pour [CMOC](http://perso.b2b2c.ca/~sarrazip/dev/cmoc.html), avec des abstractions spécifiques au MO5 : gestion des sprites, du mode graphique, des entrées, etc.  
+👉 [github.com/thlg057/sdk_mo5](https://github.com/thlg057/sdk_mo5)
+
+### 📦 MO5 Project Template
+Un template de projet prêt à l'emploi avec un Makefile automatisé.  
+3 commandes dans un GitHub Codespace, et vous compilez votre premier programme C pour MO5 — sans rien installer localement.  
+👉 [github.com/thlg057/mo5_template](https://github.com/thlg057/mo5_template)
+
+### 🤖 Serveur MCP (ce site)
+Le pont entre votre coding agent et la base de connaissances MO5.  
+Branchez-le à Claude Desktop, Cursor ou Augment, et votre IA devient soudain **spécialiste du MO5**.  
+👉 [npmjs.com/@thlg057/mo5-rag-mcp](https://www.npmjs.com/package/@thlg057/mo5-rag-mcp)
+
+---
 
 ## Un mot sur la partie technique (sans trop rentrer dans les câbles)
 
@@ -52,55 +97,35 @@ Le serveur repose sur un pipeline RAG assez classique, mais pensé pour rester *
 
 Aujourd'hui :
 
--   j'utilise un **modèle d'embeddings neuronal local**
--   les documents sont transformés en vecteurs
--   une base vectorielle fait la recherche rapide
--   une API .NET orchestre l'ensemble et renvoie les passages pertinents
+- j'utilise un **modèle d'embeddings neuronal local**
+- les documents sont transformés en vecteurs
+- une base vectorielle fait la recherche rapide
+- une API .NET orchestre l'ensemble et renvoie les passages pertinents
 
 Pourquoi ce choix ?
 
-👉 **coût quasi nul**,\
-👉 indépendance,\
-👉 et la possibilité d'itérer rapidement.
+- **coût quasi nul**,  
+- indépendance,  
+- et la possibilité d'itérer rapidement.
 
-À terme, je basculerai probablement sur des embeddings générés par des modèles IA plus récents (meilleure compréhension, meilleure
-robustesse), mais pour l'instant, j'aime bien cette approche « pas de frais surprise ».
+Le modèle a ses limites, il lui manque parfois un peu de sens et de compréhension sémantique, et les résultats ne sont pas toujours optimaux. Mais il fait le job, et surtout : pas de frais supplémentaires. Juste mon hébergement VPS, point.
 
-Quelque soit le moteur, l'objectif reste le même : fournir une réponse utile *et sourcée*, plutôt qu'une hallucination convaincante.
+Quel que soit le moteur, l'objectif reste le même : fournir une réponse utile *et sourcée*, plutôt qu'une hallucination convaincante.
 
-## Utiliser l'index MO5 directement dans votre IDE (Copilot, Augment, Claude...)
+---
 
-Grâce au protocole **MCP (Model Context Protocol)**, votre IA peut se brancher **comme si de rien n'était** sur ma base de connaissances... et devenir soudain **spécialiste du MO5**.
+## Utiliser l'index MO5 dans votre IDE en 2 minutes
 
-### 1️⃣ Installation du serveur MCP
+Grâce au protocole **MCP**, votre IA peut se brancher sur ma base de connaissances **sans installation complexe**.
 
-1.  **Cloner le dépôt :**
+Le serveur MCP est publié sur npm — pas besoin de cloner quoi que ce soit. Ajoutez simplement ceci dans votre fichier de configuration MCP (Claude Desktop, Cursor, Augment…) :
 
-``` bash
-git clone https://github.com/thlg057/mo5-mcp-server.git
-cd mo5-mcp-server
-```
-
-2.  **Préparation**
-
-Assurez-vous d'avoir **Node.js** installé.
-
-Sous Linux/macOS, pensez à rendre `index.js` exécutable :
-
-``` bash
-chmod +x index.js
-```
-
-### 2️⃣ Configuration du client MCP
-
-Ajoutez ceci dans le fichier JSON de configuration (Copilot, Augment, Claude Desktop, etc.) :
-
-``` json
+```json
 {
   "mcpServers": {
     "mo5-rag": {
-      "command": "node",
-      "args": ["C:\\votre\\chemin\\vers\\mo5-mcp-server\\index.js"],
+      "command": "npx",
+      "args": ["-y", "@thlg057/mo5-rag-mcp"],
       "env": {
         "RAG_BASE_URL": "https://retrocomputing-ai.cloud"
       }
@@ -109,27 +134,34 @@ Ajoutez ceci dans le fichier JSON de configuration (Copilot, Augment, Claude Des
 }
 ```
 
-L'URL **retrocomputing-ai.cloud** pointe vers mon API .NET : elle gère la recherche vectorielle, assemble la réponse et sert
-d'interface entre votre IDE et les documents.
+C'est tout. Pas de `git clone`, pas de `npm install`, pas de chemin à configurer. `npx` télécharge et lance le serveur à la volée. 🎉
 
-Le serveur MCP, lui, fait le pont "proprement", sans bricolage.
+Le serveur MCP est également référencé dans le **registre officiel MCP** (`registry.modelcontextprotocol.io`) — il est donc découvrable directement depuis GitHub Copilot et les autres clients compatibles.
+
+---
 
 ## Et la suite ?
 
 Le projet avance plutôt **par expérimentations** que par grandes annonces planifiées.
 
-Je continue à compléter la documentation au fil de mes découvertes, parfois en corrigeant de vieux malentendus, parfois en ajoutant des exemples plus clairs. Côté développement, je pense avoir bien apprivoisé le mode **texte**, mais le mode **graphique** est une autre histoire : plus subtil, plus exigeant... et je suis encore en train d'apprendre à le dompter.
+Je continue à compléter la documentation au fil de mes découvertes, parfois en corrigeant de vieux malentendus, parfois en ajoutant des exemples plus clairs. Côté développement, le SDK gère maintenant les sprites et le mode graphique, j'ai même réussi à faire tirer une fusée en vibe coding 🚀
 
-Je prendrai donc le temps, régulièrement, de mettre à jour la documentation.\
-D'ailleurs, tous mes fichiers **Markdown** sont disponibles avec les sources du serveur RAG, rien n'est caché, et tout peut être relu, amélioré, complété.
+Il reste quelques briques à poser pour finaliser le Space Invaders :la gestion du joystick, le son, et les inévitables optimisations qui viennent quand quelqu'un d'autre que soi essaie le truc 😄
 
-Et si vous avez envie de contribuer, d'apporter des documents, des correctifs, des idées : **faites-moi signe.** Tout seul, je ne pourrai pas faire vivre durablement ce service et j'aimerais vraiment qu'il devienne un outil utile pour tous les passionnés de retro-computing.
+Mais dans l'ensemble, la toolchain tient la route. Ce qui était encore un chantier il y a quelques mois est devenu quelque chose d'utilisable, et même d'amusant.
+
+Je prendrai donc le temps, régulièrement, de mettre à jour la documentation.  
+Tous mes fichiers **Markdown** sont disponibles avec les sources du serveur RAG, rien n'est caché, et tout peut être relu, amélioré, complété.
+
+Et si vous avez envie de contribuer, d'apporter des documents, des correctifs, des idées : **faites-moi signe.** Tout seul, je ne pourrai pas faire vivre durablement ce service, et j'aimerais vraiment qu'il devienne un outil utile pour tous les passionnés de retro-computing.
 
 Enjoy 😄
 
+---
+
 ## Pour aller plus loin
 
-Si vous voulez suivre mon aventure autour du retro-computing, je raconte tout sur mon blog :  
-Version française : https://thlg057.github.io/mo5-blog/  
-Version anglaise : https://thlg057.github.io/mo5-blog/en/  
-Sources du RAG server : https://github.com/thlg057/mo5-rag-server
+- 📖 Blog (FR) : <https://thlg057.github.io/mo5-blog/>
+- 📖 Blog (EN) : <https://thlg057.github.io/mo5-blog/en/>
+- 💾 Sources du RAG server : <https://github.com/thlg057/mo5-rag-server>
+- 🎬 Vidéo — développer sur MO5 en 3 commandes : <https://youtu.be/R9TeEZwZZpI>
