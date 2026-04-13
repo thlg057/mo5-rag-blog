@@ -28,7 +28,6 @@ Ou encore cette astuce obscure pour compiler un programme C sur MO5 ?
 
 C'est exactement pour ça que j'ai lancé **retrocomputing-ai.cloud** : un serveur RAG (*Retrieval-Augmented Generation*) pensé pour aider à faire revivre les machines… en les rendant **de nouveau programmables**.
 
----
 
 ## Ma démarche : une aide au développement très ciblée
 
@@ -69,7 +68,6 @@ Des guides que j'ai rédigés sur les techniques spécifiques au jeu vidéo sur 
 
 À terme, j'aimerais étendre la plateforme à d'autres machines mythiques : Commodore 64, Apple II, Amstrad CPC…
 
----
 
 ## Une toolchain complète pour développer sur MO5 en 2025
 
@@ -89,7 +87,6 @@ Le pont entre votre coding agent et la base de connaissances MO5.
 Branchez-le à Claude Desktop, Cursor ou Augment, et votre IA devient soudain **spécialiste du MO5**.  
 👉 [npmjs.com/@thlg057/mo5-rag-mcp](https://www.npmjs.com/package/@thlg057/mo5-rag-mcp)
 
----
 
 ## Un mot sur la partie technique (sans trop rentrer dans les câbles)
 
@@ -111,8 +108,6 @@ Pourquoi ce choix ?
 Le modèle a ses limites, il lui manque parfois un peu de sens et de compréhension sémantique, et les résultats ne sont pas toujours optimaux. Mais il fait le job, et surtout : pas de frais supplémentaires. Juste mon hébergement VPS, point.
 
 Quel que soit le moteur, l'objectif reste le même : fournir une réponse utile *et sourcée*, plutôt qu'une hallucination convaincante.
-
----
 
 ## Utiliser l'index MO5 dans votre IDE en 2 minutes
 
@@ -138,7 +133,16 @@ C'est tout. Pas de `git clone`, pas de `npm install`, pas de chemin à configure
 
 Le serveur MCP est également référencé dans le **registre officiel MCP** (`registry.modelcontextprotocol.io`) — il est donc découvrable directement depuis GitHub Copilot et les autres clients compatibles.
 
----
+
+### Ce que votre agent peut faire concrètement
+
+Au-delà de la recherche documentaire, le serveur MCP expose aussi des outils de build directement utilisables depuis votre agent :
+
+- **Générer une image disquette `.fd`** autobootable à partir de vos binaires compilés avec CMOC
+- **Convertir le `.fd` en `.sd`** pour l'utiliser avec SDDrive sur la vraie machine
+- **Convertir un PNG en sprite C** (.h) prêt à être inclus dans votre projet
+
+En pratique, ça veut dire que votre agent peut gérer l'intégralité du cycle : documentation, code, compilation, génération de la disquette, sans quitter votre IDE.
 
 ## Et la suite ?
 
@@ -157,7 +161,6 @@ Et si vous avez envie de contribuer, d'apporter des documents, des correctifs, d
 
 Enjoy 😄
 
----
 
 ## Pour aller plus loin
 
